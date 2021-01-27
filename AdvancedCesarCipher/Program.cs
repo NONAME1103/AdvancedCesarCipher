@@ -87,7 +87,7 @@ namespace AdvancedCesarCipher {
         public static string Encrypt1(string m, int[] k) {
             char[] secret = m.ToCharArray();
             for (int i = 0; i < secret.Length; i++) {
-                char temp = (char) (secret[i] + k[i % 3]);
+                char temp = (char) (secret[i] + k[i % k.Length]);
                 secret[i] = temp > 122 ? (char) (temp - 26) : temp;
             }
             return new string (secret);
