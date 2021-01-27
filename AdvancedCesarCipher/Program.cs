@@ -7,6 +7,7 @@ namespace AdvancedCesarCipher {
         static void Main(string[] args) {
             // GetKey
             // GetMessage
+            // lol
         }
     }
 }
