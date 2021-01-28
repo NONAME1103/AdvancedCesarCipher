@@ -27,6 +27,7 @@ namespace AdvancedCesarCipher {
             // Encrypt message
             string secret = type == 1 ? Encrypt1(m, k) : Encrypt2(m, k);
             Test(m, k, secret);
+            
         }
 
         public static int[] GetKey() {
@@ -94,14 +95,27 @@ namespace AdvancedCesarCipher {
         }
         
         public static string Encrypt2(string m, int[] k) {
-            string secret = "";
-            return secret;
+            char[] secret = m.ToCharArray();
+            int current = 0;
+            for (int i = 0; i < secret.Length; i++) {
+                char temp = (char) (secret[i] + k[i % k.Length] + current);
+                current += k[i % k.Length];
+                secret[i] = Normalize(temp);
+            }
+            return new string (secret);
         }
 
+        public static char Normalize(char temp) {
+            while (temp > 122) {
+                temp = (char) (temp - 26);
+            }
+            return temp;
+        }
+        
         public static void Test(string m, int[] k, string secret) {
             Console.WriteLine($"\nPlain: {m}");
             Console.Write("Key: ");
-            k.ToList().ForEach(x => Console.Write($"{Convert.ToString(x)}, "));
+            k.ToList().ForEach(x => Console.Write($"{Convert.ToString((char) (x + 96))}, "));
             Console.WriteLine($"\nEncrypted: {secret}");
         }
     }
