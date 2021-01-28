@@ -25,9 +25,8 @@ namespace AdvancedCesarCipher {
             // Get cipher type
             int type = GetType();
             // Encrypt message
-            string secret = type == 1 ? Encrypt1(m, k) : Encrypt2(m, k);
+            string secret = type == 1 ? Encrypt(m, k) : Encrypt(m, k, false);
             Test(m, k, secret);
-            
         }
 
         public static int[] GetKey() {
@@ -85,21 +84,14 @@ namespace AdvancedCesarCipher {
             return GetType();
         }
 
-        public static string Encrypt1(string m, int[] k) {
-            char[] secret = m.ToCharArray();
-            for (int i = 0; i < secret.Length; i++) {
-                char temp = (char) (secret[i] + k[i % k.Length]);
-                secret[i] = temp > 122 ? (char) (temp - 26) : temp;
-            }
-            return new string (secret);
-        }
-        
-        public static string Encrypt2(string m, int[] k) {
+        public static string Encrypt(string m, int[] k, bool reset = true) {
             char[] secret = m.ToCharArray();
             int current = 0;
             for (int i = 0; i < secret.Length; i++) {
-                char temp = (char) (secret[i] + k[i % k.Length] + current);
-                current += k[i % k.Length];
+                int shift = k[i % k.Length];
+                shift = !reset ? shift + current : shift;
+                char temp = (char) (secret[i] + shift);
+                current = shift;
                 secret[i] = Normalize(temp);
             }
             return new string (secret);
